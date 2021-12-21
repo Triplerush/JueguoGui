@@ -15,10 +15,14 @@ public class Reino {
 	public String getReino() {
 		return reino;
 	}
-	public void generarSoldado(int a) {
+	public void generarSoldados(int a) {
 		for(int i = 0; i < a; i++ ) {
 			Soldado aux = new Soldado(reino);
 			soldados.add(aux);
 		}
+	}	
+	public void generarSoldado(String tipo) {
+		Soldado aux = new Soldado(tipo);
+		soldados.add(aux);
 	}	
 }

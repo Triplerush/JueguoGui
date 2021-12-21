@@ -37,17 +37,23 @@ public class Tablero extends JFrame {
 	}
 	public void contenido() {
 		JPanel titulo = new JPanel(new GridLayout(1,2));
-		JPanel tablero = new JPanel(new GridLayout(10,10));
-		JPanel usuarioa= new JPanel(new GridLayout(10,1));
-		JPanel usuariob = new JPanel(new GridLayout(10,1));
-		JLabel atitulo = new JLabel("Juego ");
+		JPanel tablero = new JPanel(new GridLayout(10,10,5,5));
+		JPanel usuarioa= new JPanel(new GridLayout(10,1,10,10));
+		JPanel usuariob = new JPanel(new GridLayout(10,1,10,10));
+		JLabel atitulo = new JLabel(ataque.getReino() + " V.S " + defensa.getReino());
 		ausuario = new JButton("Usuario a");
 		busuario = new JButton("Usuario b");
 		datosA = new JButton("Datos a");
 		datosB = new JButton("Datos b");
 		opcionMapa = new JButton("Mapa");
+		titulo.setBackground(Color.ORANGE);
+		usuarioa.setBackground(Color.CYAN);
+		usuariob.setBackground(Color.CYAN);
+		tablero.setBackground(Color.black);
+		opcionMapa.setBackground(Color.blue);
 		for (int i = 1;i<=100;i++) {
 			JButton boton = new JButton();
+		    boton.setBackground(Color.gray);
 			tablero.add(boton);
 			boton.addActionListener(new ListenerJuego());
 		}	
@@ -72,7 +78,7 @@ public class Tablero extends JFrame {
 		return  opcionMapa;
 	}
 	public void opcionUsuario() {
-		String[] invocaciones = {"Soldado", "Mago", "Guerrero"};
+		String[] invocaciones = {"Caballero", "Arquero", "Lancero"};
 		MenuExtra opcion = new MenuExtra("Opciones del jugador");
 		String datos = "1.-Puntos para comprar: " + rd.nextInt(15);
 		JLabel datosUsuario = new JLabel(datos);
@@ -124,8 +130,17 @@ public class Tablero extends JFrame {
 				datosUsuario(defensa);
 			}else if(aux.getText().equals(invocacion)) {
 				aux.setText("");
+				aux.setBackground(Color.cyan);
 			}else{
 				aux.setText(invocacion);
+				ataque.generarSoldado(invocacion);
+				if(invocacion.equals("Caballero")) {
+					aux.setBackground(Color.cyan);
+				}else if(invocacion.equals("Lancero")) {
+					aux.setBackground(Color.RED);
+				}else {
+					aux.setBackground(Color.ORANGE);
+				}
 			}	
 		}
 	}
