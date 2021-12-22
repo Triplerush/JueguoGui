@@ -4,9 +4,9 @@ import javax.swing.*;
 
 public class VideoJuego {
 	public static void main(String[] args) {
-		Mapa escenario = new Mapa("Peru");
-		escenario.getTablero().getMapa().setText("pERU");
-		
+		Reino reino1 = new Reino("Peru");
+		Reino reino2 = new Reino("Chile");
+		Tablero escenario = new Tablero("Desierto",reino1,reino2);
 	}
 
 }
