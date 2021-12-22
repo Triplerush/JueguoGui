@@ -21,6 +21,7 @@ public class Reino {
 			soldados.add(aux);
 		}
 	}	
+<<<<<<< HEAD
 	public void generarArquero(String tipo) {
 		Arquero aux = new Arquero(tipo );
 		soldados.add(aux);
@@ -34,3 +35,10 @@ public class Reino {
 		soldados.add(aux);
 	}	
 }
+=======
+	public void generarSoldado(String tipo) {
+		Soldado aux = new Soldado(tipo);
+		soldados.add(aux);
+	}	
+}
+>>>>>>> 8acebc32cd8c479892f14cce034cbc183aa0495f

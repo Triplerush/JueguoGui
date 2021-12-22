@@ -18,7 +18,11 @@ public class Soldado {
 		nombre = Nombre;
 		nivelAtaque = rd.nextInt(5)+1;
 		nivelDefensa = rd.nextInt(5)+1;
+<<<<<<< HEAD
 		nivelVida = rd.nextInt(5)+1;
+=======
+		nivelVida = rd.nextInt(5)+1;;
+>>>>>>> 8acebc32cd8c479892f14cce034cbc183aa0495f
 		vive= true;
 
 	}	
