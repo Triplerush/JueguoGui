@@ -7,8 +7,8 @@ import java.util.Random;
 import javax.swing.*;
 
 public abstract class Menu extends JFrame {
-    private static final int ANCHO=100;
-    private static final int LARGO=300;
+    private static final int ANCHO=250;
+    private static final int LARGO=370;
     protected JPanel superior;
     protected JPanel centro;
     protected JPanel inferior;      

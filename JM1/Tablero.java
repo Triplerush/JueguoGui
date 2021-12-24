@@ -111,25 +111,129 @@ public class Tablero extends JFrame {
 	//Datos del usuario como los soldados que tiene
 	public void datosUsuario(Reino reino) {
 		MenuExtra opcion = new MenuExtra("Datos del jugador");
+        opcion.setResizable(true);
 		String dato = "Ejercito: " + reino.getReino()+"\n"+
 					  "Datos de los Soldados para invocar\n\n";
 		for(Soldado a: reino.getSoldados()) {
 			dato += a.toString() ;
 		}
-		JTextArea datos = new JTextArea(dato);//textarea para los soldados
-		datos.setEditable(false);
-		opcion.getPanelCentro().add(datos);
+	     //Agrego el texto y la cantidad de filas y columnas max que puede tener, si se pasa, esta el SCROLL
+        JTextArea datos = new JTextArea(dato,15,15);           
+        datos.setEditable(false);   
+        JScrollPane scroll = new JScrollPane(datos);
+        opcion.getPanelCentro().add(scroll);//Se añade al centro
+        opcion.getPanelInferior().add(new JLabel("HELLO"));
 	}
 	
 	//Datos del mapa 
 	public void datosMapa() {
-		MenuExtra infoMapa = new MenuExtra("Datos del mapa");
-		JPanel centro  = infoMapa.getPanelCentro();
-		String info = "Mapa : " + territorio;
-		JLabel datos = new JLabel(info);
-		centro.add(datos);
-		infoMapa.add(centro,BorderLayout.CENTER);
-
+	MenuExtra infoMapa = new MenuExtra("INFORMACIÓN DEL MAPA");
+    infoMapa.setResizable(true); //->Si esta en falso el usuario no podra agrandar la pantalla
+    infoMapa.setSize(570,270);
+        
+    JLabel datos = new JLabel("");
+    JTextArea contexto = new JTextArea();
+    JLabel zonaImagen = new JLabel();
+        
+    zonaImagen.setHorizontalAlignment(SwingConstants.CENTER);
+    zonaImagen.setBounds(0, 0, 200, 120);
+        
+    if(territorio.equals("Asedio de Castle Black")){
+    	String info =  territorio;
+    	datos = new JLabel(info);//-->Mi label de informacion
+    	
+    	datos.setHorizontalAlignment(SwingConstants.CENTER);
+            
+    	String context = "El ejercito de Mance Rayder ataca desde el norte, el castillo tiene una guarnición de\n"
+                          +  "tan solo 600 hombres , los deshonrados Guardias de la Noche. La noche se acerca y los\n "
+                          + "salvajes de Rayder los superan 100 a 1. ¿Podran los Guardias de la Noche resistir el\n "
+                          + "embate hasta la llegada de las tropas del Reino?";
+            
+        //Métodos para el TextArea
+        contexto.setText(context);
+        contexto.setEditable(false);
+            
+        //Creo la imagen
+        ImageIcon imagenPortada = new ImageIcon("CastleBlack.jpg");
+        zonaImagen.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(zonaImagen.getWidth(), zonaImagen.getHeight(), Image.SCALE_SMOOTH)));
+            
+    }
+        
+    if(territorio.equals("Tridente,Tierras en los Rios")) { 
+	    String info =  territorio;
+            
+	    datos = new JLabel(info);//-->Mi label de informacion
+        datos.setHorizontalAlignment(SwingConstants.CENTER);
+            
+            
+            
+        String context = "Las fuerzas rebeldes se reunieron en la ribera este de Foca Verde, los Stark y Baratheon\n"
+                          +  "formaron una fuerza suficiente para derrocar a vuestro Rey Aerys II Targaryen. Comandados\n "
+                          + "por Robert Baratheon, marchan al sur por el Camino Real al mayor punto de cruce del Tridente\n "
+                          + "Destruye al ejercito rebelde y trae paz al reino";
+            
+        //Métodos para el TextArea
+        contexto.setText(context);
+        contexto.setEditable(false);
+            
+        //Creo la imagen
+        ImageIcon imagenPortada = new ImageIcon("Tridente.jpg");
+        zonaImagen.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(zonaImagen.getWidth(), zonaImagen.getHeight(), Image.SCALE_SMOOTH)));
+          
+          
+    }
+         
+    if(territorio.equals("Baño del AguasNegras, Desembarco del Rey")){  
+    	String info =  territorio;
+            
+	    datos = new JLabel(info);//-->Mi label de informacion
+        datos.setHorizontalAlignment(SwingConstants.CENTER);
+            
+        String context = " El ejército de Stannis marcha hacia Desembarco del Rey. Aumentado con las fuerzas de las\n "
+                          + "Tierras de Tormentas, el rey Stannis tiene a su mando casi veinte mil hombres  . Para intentar\n"
+                          + "hacerle frente, Tyrion Lannister triplica el número de efectivos de los capas doradas de la\n"
+                          + "Guardia de la Ciudad de Desembarco del Rey. Solo un ejercito quedará en pie";                       
+                          
+        //Métodos para el TextArea
+        contexto.setText(context);
+        contexto.setEditable(false);
+            
+        //Creo la imagen
+        ImageIcon imagenPortada = new ImageIcon("AguasNegras.jpg");
+        zonaImagen.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(zonaImagen.getWidth(), zonaImagen.getHeight(), Image.SCALE_SMOOTH)));
+          
+          
+    }
+          
+    if(territorio.equals("Más Allá del Muro, Tierras Inexploradas")){
+	    String info =  territorio; 
+	    
+	    datos = new JLabel(info);//-->Mi label de informacion
+        datos.setHorizontalAlignment(SwingConstants.CENTER);
+            
+        String context = "Se anuncia, que los Caminates Blancos asaltaran las puertas del Reino ,los hombres liderados por\n "
+                          + "Jon Snow se alzan en armas y marchan en contra de este nuevo enemigo , con un nuevo territorio por \n"
+                          + "explorar y con pocos recursos los valientes guerreros se dirigen a una muerte segura, no obstante\n"
+                          + "una gran sorpresa se prepara en las tierras del Reino que se dice pondra fin a este nueva amenaza";                       
+                          
+        //Métodos para el TextArea
+        contexto.setText(context);
+        contexto.setEditable(false);
+            
+        //Creo la imagen
+        ImageIcon imagenPortada = new ImageIcon("MasAlladelMuro.jpg");
+        zonaImagen.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(zonaImagen.getWidth(), zonaImagen.getHeight(), Image.SCALE_SMOOTH)));
+          
+          
+    }  
+    
+    //Añado datos al  area Norte de infoMapa
+    infoMapa.getPanelSuperior().add(datos);
+    //La inforacion del mapa la añado aqui
+    infoMapa.getPanelCentro().add(contexto);
+    //Añado la imagen abajo
+    infoMapa.getPanelInferior().add(zonaImagen);   
+    
 	}
 	
 	//opciones de cada boton del tablero, ventana extra al hacer click en un boton con una invocacion
@@ -186,6 +290,7 @@ public class Tablero extends JFrame {
 		int[] posDespues = encontrarPosBoton();
 		registroTablero[posDespues[0]][posDespues[1]] =  registroTablero[posAnterior[0]][posAnterior[1]];
 		registroTablero[posAnterior[0]][posAnterior[1]] = null;
+		turno = !(turno);
 
 	}
 	//Cuando se invoque a un soldado este metodo pinta de color la casilla dependiendo el soldado
@@ -257,7 +362,6 @@ public class Tablero extends JFrame {
 		String nombre = registroTablero[x][y].getNombre();
 		String equipo = nombre.substring(nombre.length()-2);
 		Soldado aux;
-		System.out.print(equipo);
 		for(int i=x-1; i<x+2;i++) {
 			for(int j = y-1; j<y+2;j++) {
 				if(i>= 0 && i<10 && j>= 0 && j<10) {
@@ -273,35 +377,22 @@ public class Tablero extends JFrame {
 			}
 		}
 	}
-	//Pinta las casillas alrededor del boton de color rojo
-	public void imprimir() {
-		for(Soldado[] a: registroTablero) {
-			for(Soldado b: a) {
-				if(b!=null)
-					System.out.print(b.toString());
-			}
-		}
-	}
 	//listener solo para los botones del tablero
 	private class ListenerTablero implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton aux = (JButton)e.getSource();
 			if(aux.getBackground() == Color.red) {//Verifica si el boton tiene algun soldado
-				anularTablero();
 				movimiento(aux);
-				turno = !(turno);
 			}else if(!(aux.getText().equals(""))){
 				botonActual = aux;
 				menuActual = opcionFicha(invocacion);
-				anularTablero();
 			}else{
 				botonActual = aux;
 				nombrarCasilla(aux);
 				pintarCasilla(aux);
 				generarSoldado();
-				anularTablero();
-
 			}
+			anularTablero();
 		}
 	}
 
