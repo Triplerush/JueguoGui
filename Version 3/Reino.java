@@ -6,6 +6,7 @@ public class Reino {
 	private String reino;
 	private ArrayList<Soldado> soldados = new  ArrayList<Soldado>();
 	
+	
 	public Reino(String reino){
 		this.reino = reino;
 	}
@@ -21,24 +22,19 @@ public class Reino {
 			soldados.add(aux);
 		}
 	}	
-<<<<<<< HEAD
-	public void generarArquero(String tipo) {
+	public Arquero generarArquero(String tipo) {
 		Arquero aux = new Arquero(tipo );
 		soldados.add(aux);
+		return aux;
 	}	
-	public void generarLancero(String tipo) {
+	public Lancero generarLancero(String tipo) {
 		Lancero aux = new Lancero(tipo);
 		soldados.add(aux);
+		return aux;
 	}	
-	public void generarCaballero(String tipo) {
+	public Caballero generarCaballero(String tipo) {
 		Caballero aux = new Caballero(tipo);
 		soldados.add(aux);
+		return aux;
 	}	
 }
-=======
-	public void generarSoldado(String tipo) {
-		Soldado aux = new Soldado(tipo);
-		soldados.add(aux);
-	}	
-}
->>>>>>> 8acebc32cd8c479892f14cce034cbc183aa0495f
