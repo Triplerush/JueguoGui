@@ -13,7 +13,7 @@ public class MenuExtra extends Menu {
         super(titulo);
     } 
     public void contenido(String title) {
-    	superior = new JPanel(new FlowLayout());
+    	superior = new JPanel(new GridLayout(2,1));
     	centro = new JPanel(new FlowLayout());
     	inferior = new JPanel(new FlowLayout());
     	

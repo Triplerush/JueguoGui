@@ -3,12 +3,15 @@ package JM1;
 import java.util.*;
 
 public class Reino {
+	static Random rd = new Random();
+	private int monedas;
 	private String reino;
 	private ArrayList<Soldado> soldados = new  ArrayList<Soldado>();
 	
 	
 	public Reino(String reino){
 		this.reino = reino;
+		monedas = rd.nextInt(100)+1;
 	}
 	public ArrayList<Soldado> getSoldados() {
 		return soldados;
@@ -36,5 +39,12 @@ public class Reino {
 		Caballero aux = new Caballero(tipo);
 		soldados.add(aux);
 		return aux;
+	}
+	public int getMonedas() {
+		return monedas;
+	}
+	public void setMonedas(int monedas) {
+		this.monedas = monedas;
 	}	
+	
 }
