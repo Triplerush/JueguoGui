@@ -20,9 +20,11 @@ public class Tablero extends JFrame {
 	private JButton opcionMapa;
 	private JButton botonUserAtaque;
 	private JButton botonUserDefensa;
-	private JButton datosA;
-	private JButton datosB;
+	private JButton datosAtaque;
+	private JButton datosDefensa;
 	private JButton atacar;
+	private JButton moverse;
+	private JButton habilidad;
 	private JButton botonActual;
 	private JLabel mensaje;
 	private Mapa territorio;
@@ -51,8 +53,8 @@ public class Tablero extends JFrame {
 		//Componentes del tablero
 		JPanel titulo = new JPanel(new GridLayout(1,3));
 		tablero = new JPanel(new GridLayout(10,10,5,5));
-		JPanel userAtaque= new JPanel(new GridLayout(10,1,10,10));
-		JPanel userDefensa = new JPanel(new GridLayout(10,1,10,10));
+		PanelPintado panelUserAtaque= new PanelPintado(territorio.getBases());
+		PanelPintado panelUserDefensa = new PanelPintado(territorio.getBases());
 		JLabel equipos = new JLabel(equipoAtaque.getReino() + " V.S " + equipoDefensa.getReino());
 		mensaje = new JLabel("Turno del Reino Atacante");
 		botonUserAtaque = new JButton("Usuario Ataque");
@@ -60,16 +62,16 @@ public class Tablero extends JFrame {
 		generarBotones();
 
 		//Caracteristicas de los componentes
-		userAtaque.setBorder(new EmptyBorder(5,5,5,5));
-		userDefensa.setBorder(new EmptyBorder(5,5,5,5));
+		panelUserAtaque.setLayout(new GridLayout(10,1,10,10));
+		panelUserDefensa.setLayout(new GridLayout(10,1,10,10));
+		panelUserAtaque.setBorder(new EmptyBorder(5,5,5,5));
+		panelUserDefensa.setBorder(new EmptyBorder(5,5,5,5));
 		tablero.setBorder(new EmptyBorder(5,5,5,5));
 		botonUserAtaque.setSize(LARGO, ANCHO);
-		datosA = new JButton("Datos a");
-		datosB = new JButton("Datos b");
+		datosAtaque = new JButton("Datos a");
+		datosDefensa = new JButton("Datos b");
 		opcionMapa = new JButton("Mapa");
-		titulo.setBackground(Color.ORANGE);
-		userAtaque.setBackground(territorio.getBases());
-		userDefensa.setBackground(territorio.getBases());
+		titulo.setBackground(territorio.getMapa());
 		tablero.setBackground(territorio.getMapa());
 		opcionMapa.setBackground(territorio.getMapa());
 		
@@ -77,21 +79,21 @@ public class Tablero extends JFrame {
 		titulo.add(equipos);
 		titulo.add(mensaje);
 		titulo.add(opcionMapa);
-		userAtaque.add(botonUserAtaque);
-		userDefensa.add(botonUserDefensa);
-		userAtaque.add(datosA);
-		userDefensa.add(datosB);
+		panelUserAtaque.add(botonUserAtaque);
+		panelUserDefensa.add(botonUserDefensa);
+		panelUserAtaque.add(datosAtaque);
+		panelUserDefensa.add(datosDefensa);
 		add(titulo,BorderLayout.NORTH);
 		add(tablero,BorderLayout.CENTER);
-		add(userAtaque,BorderLayout.WEST);
-		add(userDefensa,BorderLayout.EAST);
+		add(panelUserAtaque,BorderLayout.WEST);
+		add(panelUserDefensa,BorderLayout.EAST);
 		
 		//Colocando los listener
 		opcionMapa.addActionListener(new Listener());
 		botonUserAtaque.addActionListener(new Listener());
 		botonUserDefensa.addActionListener(new Listener());
-		datosA.addActionListener(new Listener());
-		datosB.addActionListener(new Listener());
+		datosAtaque.addActionListener(new Listener());
+		datosDefensa.addActionListener(new Listener());
 		
 		restablecerTablero();
 	}
@@ -136,7 +138,6 @@ public class Tablero extends JFrame {
         datos.setEditable(false);   
         JScrollPane scroll = new JScrollPane(datos);
         opcion.getPanelCentro().add(scroll);//Se añade al centro
-        opcion.getPanelInferior().add(new JLabel("HELLO"));
 	}
 	
 	//Datos del mapa 
@@ -168,20 +169,33 @@ public class Tablero extends JFrame {
 	}
 	
 	//opciones de cada boton del tablero, ventana extra al hacer click en un boton con una invocacion
-	public MenuExtra opcionFicha(String ficha) {
-		MenuExtra opcionFicha = new MenuExtra("Opciones del : " + ficha);
+	public MenuExtra opcionFicha() {
+		MenuExtra opcionFicha = new MenuExtra("Opciones del " + botonActual.getText());
 		JPanel centro  = opcionFicha.getPanelCentro();
+		JPanel centroSuperior  = new JPanel();
+		JPanel centroInferior  = new JPanel();
+		centro.add(centroSuperior);
+		centro.add(centroInferior);
 		atacar = new JButton("Atacar");
-		JButton habilidad1 = new JButton("Habilidad 1");
-		JButton habilidad2 = new JButton("Habilidad 2");
+		moverse = new JButton("Moverse");
+		habilidad = new JButton("Habilidad");
+		Soldado soldadoActual = registroTablero[encontrarPosBoton()[0]][encontrarPosBoton()[1]];
+		JTextArea datos = new JTextArea(soldadoActual.toString());
+		datos.setEditable(false);   
+
 		
 		opcionFicha.setSize(250, 300);
-		centro.setLayout(new GridLayout(5,1,5,5));
-		centro.add(atacar);
-		centro.add(habilidad1);
-		centro.add(habilidad2);
+		centroSuperior.setLayout(new GridLayout(3,1,5,5));
+		centroSuperior.add(atacar);
+		centroSuperior.add(moverse);
+		centroSuperior.add(habilidad);
 		opcionFicha.add(centro,BorderLayout.CENTER);
 		atacar.addActionListener(new Listener());
+		moverse.addActionListener(new Listener());
+	
+		centroInferior.add(datos);
+		
+		
 		
 		return opcionFicha;
 	}				
@@ -192,22 +206,25 @@ public class Tablero extends JFrame {
 		Soldado soldado;
 		Reino reino;
 		String equipo;
+		boolean orientacion;
 		
 		//Verifico con que reino actuo
 		if(turno) {
 			reino = equipoAtaque;
 			equipo = " - E1";
+			orientacion = true;
 		}else {
 			reino = equipoDefensa;
 			equipo = " - E2";
+			orientacion = false;
 		}
 		
 		if(invocacion.equals("Caballero")) {
 			soldado = reino.generarCaballero(invocacion+equipo);
 		}else if(invocacion.equals("Lancero")) {
-			soldado = reino.generarLancero(invocacion+equipo);
+			soldado = reino.generarLancero(invocacion+equipo,orientacion);
 		}else {
-			soldado = reino.generarArquero(invocacion+equipo);
+			soldado = reino.generarArquero(invocacion+equipo,orientacion);
 		}
 		
 		registroTablero[temp[0]][temp[1]] = soldado ;
@@ -220,9 +237,9 @@ public class Tablero extends JFrame {
 	public void movimiento(JButton botonMov) {
 		botonMov.setText(botonActual.getText());		
 		botonMov.setBackground(botonActual.getBackground());
-		botonMov.setEnabled(true);;
+		botonMov.setEnabled(true);
 		botonActual.setText("");
-		botonActual.setEnabled(false);;
+		botonActual.setEnabled(!(turno));
 		int[] posAnterior = encontrarPosBoton();
 		botonActual = botonMov;
 		int[] posDespues = encontrarPosBoton();
@@ -232,6 +249,28 @@ public class Tablero extends JFrame {
 		cambioMensaje();
 
 	}
+	
+	//Movimiento de la ficha en los lugares pintados de rojo
+	public void ataque(JButton botonAtacado) {
+		int[] posAtaque = encontrarPosBoton();
+		Soldado soldadoAtacante = registroTablero[posAtaque[0]][posAtaque[1]];
+		if(soldadoAtacante.getTipoSoldado().equals("Arquero")) {
+			
+		}
+		botonActual = botonAtacado;
+		int[] posDefensa = encontrarPosBoton();
+		int nivelVidaNuevo = registroTablero[posDefensa[0]][posDefensa[1]].getNivelVida()- soldadoAtacante.getNivelAtaque();
+		if(nivelVidaNuevo<=0) {
+			registroTablero[posDefensa[0]][posDefensa[1]].morir();
+			botonesTablero[posDefensa[0]][posDefensa[1]].setText("");
+			registroTablero[posDefensa[0]][posDefensa[1]]= null;
+		}else
+			registroTablero[posDefensa[0]][posDefensa[1]].setNivelVida(nivelVidaNuevo);
+		turno = !(turno);
+		cambioMensaje();
+
+	}
+	
 	//Funcion para cambiar el mensaje segun el turno
 	public void cambioMensaje() {
 		if(turno){
@@ -249,21 +288,21 @@ public class Tablero extends JFrame {
 		}
 	}
 	//Verifica si el reino si tiene monedas para invocar
-	public boolean verificarMonedas() {
+	public boolean verificarMonedas(){
 		Reino reino;
 		if(turno) {
 			reino = equipoAtaque;
 		}else 
 			reino = equipoDefensa;
 
-		if(invocacion.equals("Caballero") && reino.getMonedas()-3>=0) {
-			cobrarPrecio(3);
+		if(invocacion.equals("Caballero") && reino.getMonedas()-8>=0) {
+			cobrarPrecio(8);
 			return true;
-		}else if(invocacion.equals("Lancero")&& reino.getMonedas()-5>=0) {
+		}else if(invocacion.equals("Lancero")&& reino.getMonedas()-10>=0) {
+			cobrarPrecio(10);
+			return true;
+		}else if(invocacion.equals("Arquero")&& reino.getMonedas()-5>=0){
 			cobrarPrecio(5);
-			return true;
-		}else if(invocacion.equals("Arquero")&& reino.getMonedas()-4>=0){
-			cobrarPrecio(4);
 			return true;
 		}else {
 			mensaje.setText("Sin monedas necesarias para comprar");
@@ -278,16 +317,7 @@ public class Tablero extends JFrame {
 			aux.setText(invocacion+" - E2");
 		}
 	}
-	//Cuando se invoque a un soldado este metodo pinta de color la casilla dependiendo el soldado
-	public void pintarCasilla(JButton aux) {
-		if(invocacion.equals("Caballero")) {
-			aux.setBackground(Color.cyan);
-		}else if(invocacion.equals("Lancero")) {
-			aux.setBackground(Color.green);
-		}else {
-			aux.setBackground(Color.ORANGE);
-		}
-	}
+
 	//Anulacion de los botones del tablero por turnos 
 	public void restablecerTablero() {
 		for (int i = 0;i<10;i++) {
@@ -318,9 +348,9 @@ public class Tablero extends JFrame {
 						botonesTablero[i][j+5].setBackground(Color.ORANGE);
 					}
 				}
-				
 			}
-		}	
+		}
+		asignarGanador();
 	}
 	//Funcion para saber la posicion del boton presionado
 	public int[] encontrarPosBoton() {
@@ -335,17 +365,57 @@ public class Tablero extends JFrame {
 		return null;
 	}
 	//Pinta las casillas alrededor del boton de color rojo
-	public void pintarCasillaAlrededor(int x,int y) {
-		String nombre = registroTablero[x][y].getNombre();
-		String equipo = nombre.substring(nombre.length()-2);
+	public void pintarCasillaMov(int x,int y) {
 		Soldado aux;
 		for(int i=x-1; i<x+2;i++) {
 			for(int j = y-1; j<y+2;j++) {
 				if(i>= 0 && i<10 && j>= 0 && j<10) {
 					aux = registroTablero[i][j];
 					if(aux == null ){
-						botonesTablero[i][j].setBackground(Color.red);
+						botonesTablero[i][j].setBackground(Color.blue);
 						botonesTablero[i][j].setEnabled(true);
+					}
+				}
+			}
+		}
+	}
+	//Pinta las casillas alrededor del boton de color rojo
+	public void menuGanador(Reino reino) {
+		MenuExtra menuGanador = new MenuExtra("!!!El Reino de " + reino.getReino()+" es el Ganador!!!");
+		menuGanador.getTitulo().setFont(new Font("Serif",Font.BOLD, 40));
+		menuGanador.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	//Pinta las casillas alrededor del boton de color rojo
+	public void asignarGanador() {
+		if(!(verificarSoldados(equipoAtaque)) && equipoAtaque.getMonedas()<=2) {
+			menuGanador(equipoDefensa);
+		}else if(!(verificarSoldados(equipoDefensa)) && equipoDefensa.getMonedas()<=2) {
+			menuGanador(equipoAtaque);
+		}
+		
+	}
+	//Pinta las casillas alrededor del boton de color rojo
+	public boolean verificarSoldados(Reino reino) {
+		for(Soldado a: reino.getSoldados()) {
+			if(a.isVive()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	//Pinta las casillas alrededor del boton de color rojo
+	public void pintarCasillaAtaque(int x,int y) {
+		String equipo = registroTablero[x][y].getNombre().substring(registroTablero[x][y].getNombre().length()-2);
+		int[] rango = registroTablero[x][y].getRangoAtaque();
+		Soldado aux;
+
+		for(int i=x+rango[1]; i<x+rango[1]+rango[3];i++) {
+			for(int j = y+rango[0]; j<y+rango[0]+rango[2];j++) {
+				if(i>= 0 && i<10 && j>= 0 && j<10) {
+					aux = registroTablero[i][j];
+					if(aux == null ){
+						botonesTablero[i][j].setBackground(Color.red);
+						botonesTablero[i][j].setEnabled(false);
 					}else if(!(aux.getNombre().substring(aux.getNombre().length()-2).equals(equipo))){
 						botonesTablero[i][j].setBackground(Color.red);
 						botonesTablero[i][j].setEnabled(true);	
@@ -358,20 +428,21 @@ public class Tablero extends JFrame {
 	private class ListenerTablero implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JButton aux = (JButton)e.getSource();
-			if(aux.getBackground() == Color.red) {//Verifica si el boton tiene algun soldado
+			if(aux.getBackground() == Color.blue) {//Verifica si el boton tiene algun soldado
 				movimiento(aux);
+			}else if(aux.getBackground() == Color.red){
+				ataque(aux);
 			}else if(aux.getText().equals("")){
 				if(!(invocacion.equals(""))) {
 					if(verificarMonedas()) {
 						botonActual = aux;
 						nombrarCasilla(aux);
-						pintarCasilla(aux);
 						generarSoldado();
 					}
 				}
 			}else{
 				botonActual = aux;
-				menuActual = opcionFicha(invocacion);
+				menuActual = opcionFicha();
 			}
 			restablecerTablero();
 		}
@@ -382,20 +453,30 @@ public class Tablero extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == lista) {
 				invocacion = (String)lista.getSelectedItem();		
+			}else if(e.getSource() == botonUserAtaque){
+				opcionUsuario(equipoAtaque);
 			}else if(e.getSource() == botonUserDefensa ){
 				opcionUsuario(equipoDefensa);
 			}else if(e.getSource() == opcionMapa){
 				datosMapa();
-			}else if(e.getSource() == botonUserAtaque){
-				opcionUsuario(equipoAtaque);
-			}else if(e.getSource() == datosA) {
+			}else if(e.getSource() == datosAtaque) {
 				datosUsuario(equipoAtaque);
-			}else if(e.getSource() == datosB){
+			}else if(e.getSource() == datosDefensa){
 				datosUsuario(equipoDefensa);
+			}else if(e.getSource() == moverse){
+				pintarCasillaMov(encontrarPosBoton()[0],encontrarPosBoton()[1]);
+				menuActual.dispose();
 			}else if(e.getSource() == atacar){
-				pintarCasillaAlrededor(encontrarPosBoton()[0],encontrarPosBoton()[1]);
+				pintarCasillaAtaque(encontrarPosBoton()[0],encontrarPosBoton()[1]);
+				menuActual.dispose();
+			}else if(e.getSource() == moverse){
+				pintarCasillaMov(encontrarPosBoton()[0],encontrarPosBoton()[1]);
+				menuActual.dispose();
+			}else if(e.getSource() == habilidad){
+				pintarCasillaAtaque(encontrarPosBoton()[0],encontrarPosBoton()[1]);
 				menuActual.dispose();
 			}
 		}
 	}
+
 }

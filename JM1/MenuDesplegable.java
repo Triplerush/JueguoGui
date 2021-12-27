@@ -20,7 +20,9 @@ public class MenuDesplegable extends Menu {
     
     public void contenido(String title) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400,375); 
+        setSize(900,800); 
+        this.setLocationRelativeTo(null);    
+
                    
 	    superior = new JPanel(new FlowLayout());
         centro = new JPanel(new FlowLayout());
@@ -83,9 +85,11 @@ public class MenuDesplegable extends Menu {
                           +  "tan solo 600 hombres , los deshonrados Guardias de la Noche. La noche se acerca y los\n "
                           + "salvajes de Rayder los superan 100 a 1. ¿Podran los Guardias de la Noche resistir el\n "
                           + "embate hasta la llegada de las tropas del Reino?";
-                  imagenPortada= new ImageIcon("CastleBlack.jpg");
+                  
+            	  imagenPortada= new ImageIcon("CastleBlack.jpg");
                   img.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_SMOOTH)));
-            	  mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.black,Color.gray,Color.lightGray);
+                  
+            	  mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.black,Color.gray,"S");
        
                }else if(mapaSeleccionado.equals("Tridente,Tierras en los Rios")){
             	   
@@ -95,7 +99,7 @@ public class MenuDesplegable extends Menu {
                            + "Destruye al ejercito rebelde y trae paz al reino"; 
             	   imagenPortada = new ImageIcon("Tridente.jpg");
             	   img.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_SMOOTH)));
-             	   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.blue,Color.red,Color.darkGray);
+             	   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.blue,Color.red,"S");
    
                }else if(mapaSeleccionado.equals("Baño del AguasNegras, Desembarco del Rey")){
             	   
@@ -105,7 +109,7 @@ public class MenuDesplegable extends Menu {
                            + "Guardia de la Ciudad de Desembarco del Rey. Solo un ejercito quedará en pie";   
             	   imagenPortada = new ImageIcon("AguasNegras.jpg");
             	   img.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_SMOOTH)));
-             	   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.black,Color.gray,Color.darkGray);
+             	   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.black,Color.gray,"S");
   
                }else if (mapaSeleccionado.equals("Más Allá del Muro, Tierras Inexploradas")) {
             	   
@@ -115,7 +119,7 @@ public class MenuDesplegable extends Menu {
                            + "una gran sorpresa se prepara en las tierras del Reino que se dice pondra fin a este nueva amenaza";       
             	   imagenPortada = new ImageIcon("MasAlladelMuro.jpg");
                    img.setIcon(new ImageIcon(imagenPortada.getImage().getScaledInstance(img.getWidth(), img.getHeight(), Image.SCALE_SMOOTH)));   
-                   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,Color.white,Color.WHITE,Color.cyan);
+                   mapa = new Mapa(mapaSeleccionado,contexto,imagenPortada,new Color(217,242,245),Color.WHITE,"/imagenes/PisoNieve.png");
 
                }
                centro.add(img);

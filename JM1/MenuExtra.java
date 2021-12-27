@@ -31,6 +31,9 @@ public class MenuExtra extends Menu {
     public JLabel getTitulo(){
     	 return titulo;
     }
+    
+    
+   	
     	    
 }
 		

@@ -10,10 +10,10 @@ public class Mapa {
 	private ImageIcon imagenPortada ;
 	private Color piso;
 	private Color casilla;
-	private Color bases;
+	private String bases;
 	
 	
-	public Mapa(String titulo, String texto,ImageIcon imagenPortada,Color piso,Color casilla,Color bases ) { 
+	public Mapa(String titulo, String texto,ImageIcon imagenPortada,Color piso,Color casilla,String bases ) { 
 		this.titulo = titulo;
 		this.texto = texto;
 		this.imagenPortada = imagenPortada;
@@ -42,7 +42,7 @@ public class Mapa {
 		return casilla;
 	}
 
-	public Color getBases() {
+	public String getBases() {
 		return bases;
 	}
 }

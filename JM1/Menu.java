@@ -7,8 +7,8 @@ import java.util.Random;
 import javax.swing.*;
 
 public abstract class Menu extends JFrame {
-    private static final int ANCHO=250;
-    private static final int LARGO=370;
+    private int ancho=250;
+    private int largo=370;
     protected JPanel superior;
     protected JPanel centro;
     protected JPanel inferior;      
@@ -16,10 +16,10 @@ public abstract class Menu extends JFrame {
 
     public Menu(String titulo) {
     	setTitle(titulo);
-    	setSize(ANCHO,LARGO);
-    	setLayout(new BorderLayout());
+    	setSize(ancho,largo);
     	contenido(titulo);
     	setVisible(true);
+    	
     }
     public JPanel getPanelSuperior() {
     	return superior;

@@ -11,7 +11,7 @@ public class Reino {
 	
 	public Reino(String reino){
 		this.reino = reino;
-		monedas = rd.nextInt(100)+1;
+		monedas = 50;
 	}
 	public ArrayList<Soldado> getSoldados() {
 		return soldados;
@@ -19,19 +19,13 @@ public class Reino {
 	public String getReino() {
 		return reino;
 	}
-	public void generarSoldados(int a) {
-		for(int i = 0; i < a; i++ ) {
-			Soldado aux = new Soldado(reino);
-			soldados.add(aux);
-		}
-	}	
-	public Arquero generarArquero(String tipo) {
-		Arquero aux = new Arquero(tipo );
+	public Arquero generarArquero(String tipo,boolean orientacion) {
+		Arquero aux = new Arquero(tipo,orientacion);
 		soldados.add(aux);
 		return aux;
 	}	
-	public Lancero generarLancero(String tipo) {
-		Lancero aux = new Lancero(tipo);
+	public Lancero generarLancero(String tipo,boolean orientacion) {
+		Lancero aux = new Lancero(tipo,orientacion);
 		soldados.add(aux);
 		return aux;
 	}	
